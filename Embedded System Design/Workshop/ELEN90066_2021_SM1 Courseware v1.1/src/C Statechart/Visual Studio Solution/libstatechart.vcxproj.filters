@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="C Statechart">
+      <UniqueIdentifier>{63305afc-d39e-4300-b7da-5e6c9cf1b97c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Kobuki">
+      <UniqueIdentifier>{fdbd8b03-e540-41dd-956e-dd25bbd840e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="visa">
+      <UniqueIdentifier>{b694db6b-2c9a-436c-9b6d-cfd56320ea37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="target">
+      <UniqueIdentifier>{fae89ba5-a08b-43ac-a061-0e948f194ce2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="target\simulator">
+      <UniqueIdentifier>{df7913d5-29b8-4c90-8b29-3adabd06a044}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\KobukiNavigationStateChart.c">
+      <Filter>C Statechart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\kobuki\KobukiSensors.c">
+      <Filter>Kobuki</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\kobuki\KobukiStateChartSimShell.c">
+      <Filter>target\simulator</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\KobukiNavigationStateChart.h">
+      <Filter>C Statechart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\kobuki\KobukiSensors.h">
+      <Filter>Kobuki</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\kobuki\KobukiSensorType.h">
+      <Filter>Kobuki</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\visa\visa.h">
+      <Filter>visa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\visa\visatype.h">
+      <Filter>visa</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\visa\visa32.lib">
+      <Filter>visa</Filter>
+    </Library>
+  </ItemGroup>
+</Project>

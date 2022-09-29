@@ -1,0 +1,76 @@
+signal x,y,z,pitch,roll,yaw,dist,angle,ax,ay,az,bump_l,bump_c,bump_r,drop_l,drop_r,cliff_l,cliff_c, cliff_r, cliff_ls,cliff_cs, cliff_rs, lws, rws 
+
+param Tmax= 40
+
+## Circle 
+
+param small_ws=1, small_angle = 5
+reorient_left := (abs(lws[t] + rws[t]) < small_ws) and (rws[t] > small_ws) 
+reorient_right := (abs(lws[t] + rws[t]) <small_ws) and (lws[t] > small_ws) 
+reorient := (reorient_left) or (reorient_right) 
+
+yaw0 := abs(yaw[t])< small_angle
+circle := (yaw0) and (reorient until_[1, 50] (yaw0))
+phi_circle := ev_[0, Tmax] (circle)
+
+
+### Loose tolerance in re-orientation
+
+param angle_tol = 15, tau = 39
+mu_angle0 := abs (angle[t]) < angle_tol  
+phi_wrong_orientation := ev_[tau,Tmax] (not mu_angle0)
+
+### Nav south left
+mu_south_left := y[t] < 3. or x[t] > 5
+phi_goal_south_left := alw_[0, Tmax] mu_south_left
+
+test nav_obstacle_south_left: "Environment - obstacle south left.xml", 40.1, true
+{
+ 	 
+    fault_goal_south_left 
+    {phi_goal_south_left,
+     "PROBLEM: Couldn't avoid obstacle on time (40s)",
+     "Requirement PASSED: Avoid obstacle on time (40s)",
+     false
+    }
+	
+
+	fault_wrong_orientation_south_left 
+	{(not phi_goal_south_left) and phi_wrong_orientation,
+   	"PROBLEM DETECTED: Obstacle avoided, but travels in a significantly different direction than initially.",
+	"",
+	true
+	}	
+	
+	fault_circle 
+	{phi_circle,
+   	"PROBLEM DETECTED: Circles in-place. A possible cause is the use of strict equality (or very low tolerance) in re-orientation check",
+	"",
+	true
+	}
+}
+
+### Nav east right
+mu_east_right := y[t] > 5. or x[t] < 3. 
+phi_goal_east_right := alw_[0, Tmax] mu_east_right 
+
+test nav_obstacle_east_right: "Environment - obstacle east right.xml", 40.1, true
+{
+
+ 	fault_goal_east_right
+    {phi_goal_east_right,
+     "PROBLEM: Couldn't avoid obstacle on time (40s)",
+     "Requirement PASSED: Avoid obstacle on time (40s)",
+     false
+    }
+	
+	fault_wrong_orientation_east_right 
+	{(not phi_goal_east_right) and phi_wrong_orientation,
+   	"PROBLEM DETECTED: Obstacle avoided, but travels in a significantly different direction than initially.",
+	"",
+	true
+	}	
+
+	fault_circle
+}
+

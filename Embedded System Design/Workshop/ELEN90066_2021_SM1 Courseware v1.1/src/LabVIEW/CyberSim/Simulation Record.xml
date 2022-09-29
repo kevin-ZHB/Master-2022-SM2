@@ -1,0 +1,272 @@
+<?xml version='1.0' standalone='yes' ?>
+<LVData xmlns="http://www.ni.com/LVData">
+<Version>15.0.1</Version>
+<Cluster>
+<Name>record</Name>
+<NumElts>5</NumElts>
+<Cluster>
+<Name>configuration</Name>
+<NumElts>9</NumElts>
+<SGL>
+<Name>maxTime</Name>
+<Val>Inf</Val>
+</SGL>
+<Boolean>
+<Name>enableVisualization</Name>
+<Val>1</Val>
+</Boolean>
+<Path>
+<Name>Environment Definition</Name>
+<Val>C:\Users\gilled\Downloads\EmbeddedLab_v1.70_Courseware-Kobuki\EmbeddedLab_v1.70_Courseware\Courseware\CyberSim\data\Environment - Navigation Maze 1.xml</Val>
+</Path>
+<Path>
+<Name>Record Location</Name>
+<Val>Simulation Record.xml</Val>
+</Path>
+<Boolean>
+<Name>autograde?</Name>
+<Val>0</Val>
+</Boolean>
+<Boolean>
+<Name>interactive?</Name>
+<Val>0</Val>
+</Boolean>
+<EL>
+<Name>Feedback Mode</Name>
+<Choice>debug navigation</Choice>
+<Choice>debug hill climb</Choice>
+<Choice>autograde navigation</Choice>
+<Choice>autograde hill climb</Choice>
+<Val>0</Val>
+</EL>
+<Array>
+<Name>Robot State Charts</Name>
+<Dimsize>1</Dimsize>
+<Path>
+<Name>Robot 2 State Chart</Name>
+<Val>..\statechart\Simulation Statechart.vi</Val>
+</Path>
+</Array>
+<Path>
+<Name>statechart</Name>
+<Val>..\statechart\Simulation Statechart.vi</Val>
+</Path>
+</Cluster>
+<Array>
+<Name>trace</Name>
+<Dimsize>1</Dimsize>
+<Cluster>
+<Name>Trace Element</Name>
+<NumElts>4</NumElts>
+<Cluster>
+<Name>sensors</Name>
+<NumElts>7</NumElts>
+<I32>
+<Name>net distance (mm)</Name>
+<Val>0</Val>
+</I32>
+<I32>
+<Name>net angle (deg)</Name>
+<Val>0</Val>
+</I32>
+<Cluster>
+<Name>accelerometer</Name>
+<NumElts>3</NumElts>
+<DBL>
+<Name>x axis (g)</Name>
+<Val>-1.31731976305916E-2</Val>
+</DBL>
+<DBL>
+<Name>y axis (g)</Name>
+<Val>-1.65773610699310E-2</Val>
+</DBL>
+<DBL>
+<Name>z axis (g)</Name>
+<Val>0.99581330558940</Val>
+</DBL>
+</Cluster>
+<Boolean>
+<Name>Is Simulator?</Name>
+<Val>1</Val>
+</Boolean>
+<Cluster>
+<Name>Kobuki Sensors</Name>
+<NumElts>21</NumElts>
+<Cluster>
+<Name>Bumps + Wheel Drops</Name>
+<NumElts>5</NumElts>
+<Boolean>
+<Name>Wheeldrop Left</Name>
+<Val>0</Val>
+</Boolean>
+<Boolean>
+<Name>Wheeldrop Right</Name>
+<Val>0</Val>
+</Boolean>
+<Boolean>
+<Name>Bump Left</Name>
+<Val>0</Val>
+</Boolean>
+<Boolean>
+<Name>Bump Center</Name>
+<Val>0</Val>
+</Boolean>
+<Boolean>
+<Name>Bump Right</Name>
+<Val>0</Val>
+</Boolean>
+</Cluster>
+<Boolean>
+<Name>Cliff Left</Name>
+<Val>0</Val>
+</Boolean>
+<Boolean>
+<Name>Cliff Center</Name>
+<Val>0</Val>
+</Boolean>
+<Boolean>
+<Name>Cliff Right</Name>
+<Val>0</Val>
+</Boolean>
+<U16>
+<Name>Cliff Left Signal</Name>
+<Val>748</Val>
+</U16>
+<U16>
+<Name>Cliff Center Signal</Name>
+<Val>752</Val>
+</U16>
+<U16>
+<Name>Cliff Right Signal</Name>
+<Val>748</Val>
+</U16>
+<Cluster>
+<Name>Buttons</Name>
+<NumElts>3</NumElts>
+<Boolean>
+<Name>B0</Name>
+<Val>0</Val>
+</Boolean>
+<Boolean>
+<Name>B1</Name>
+<Val>0</Val>
+</Boolean>
+<Boolean>
+<Name>B2</Name>
+<Val>0</Val>
+</Boolean>
+</Cluster>
+<U16>
+<Name>Left Wheel Encoder (ticks)</Name>
+<Val>0</Val>
+</U16>
+<U16>
+<Name>Right Wheel Encoder (ticks) </Name>
+<Val>0</Val>
+</U16>
+<I8>
+<Name>Left  Wheel PWM</Name>
+<Val>0</Val>
+</I8>
+<I8>
+<Name>Right Wheel PWM</Name>
+<Val>0</Val>
+</I8>
+<Boolean>
+<Name>Left Wheel OverCurrent</Name>
+<Val>0</Val>
+</Boolean>
+<Boolean>
+<Name>Right Wheel OverCurrent </Name>
+<Val>0</Val>
+</Boolean>
+<I16>
+<Name>Right Wheel Current (x10mA)</Name>
+<Val>0</Val>
+</I16>
+<I16>
+<Name>Left  Wheel Current  (x10mA)</Name>
+<Val>0</Val>
+</I16>
+<U16>
+<Name>TimeStamp</Name>
+<Val>0</Val>
+</U16>
+<I16>
+<Name>Battery Voltage (mV)</Name>
+<Val>0</Val>
+</I16>
+<I16>
+<Name>Angle( of 100deg)</Name>
+<Val>0</Val>
+</I16>
+<I16>
+<Name>Angle Rate( of 100 deg/sec)</Name>
+<Val>0</Val>
+</I16>
+<I8>
+<Name>Charger Source </Name>
+<Val>0</Val>
+</I8>
+</Cluster>
+<I32>
+<Name>Requested Left Wheel Velocity(mm/s)</Name>
+<Val>0</Val>
+</I32>
+<I32>
+<Name>Requested Right Wheel Velocity(mm/s)</Name>
+<Val>0</Val>
+</I32>
+</Cluster>
+<Cluster>
+<Name>position</Name>
+<NumElts>3</NumElts>
+<SGL>
+<Name>x (m)</Name>
+<Val>2.31316</Val>
+</SGL>
+<SGL>
+<Name>y (m)</Name>
+<Val>0.42997</Val>
+</SGL>
+<SGL>
+<Name>z (m)</Name>
+<Val>5.57607E-2</Val>
+</SGL>
+</Cluster>
+<Cluster>
+<Name>orientation</Name>
+<NumElts>3</NumElts>
+<SGL>
+<Name>roll (deg)</Name>
+<Val>-2.98500</Val>
+</SGL>
+<SGL>
+<Name>pitch (deg)</Name>
+<Val>-2.25946E-4</Val>
+</SGL>
+<SGL>
+<Name>yaw (deg)</Name>
+<Val>-5.64336E-3</Val>
+</SGL>
+</Cluster>
+<SGL>
+<Name>Simulation Time (s)</Name>
+<Val>1.00500</Val>
+</SGL>
+</Cluster>
+</Array>
+<String>
+<Name>environment MD5</Name>
+<Val>c699f37ec3afe75b6526c256f5bc884f</Val>
+</String>
+<String>
+<Name>statechart MD5</Name>
+<Val>7554b41aa9501e0755c35224034d1079</Val>
+</String>
+<String>
+<Name>record timestamp</Name>
+<Val>10/4/2016 12:05:33 PM</Val>
+</String>
+</Cluster>
+</LVData>

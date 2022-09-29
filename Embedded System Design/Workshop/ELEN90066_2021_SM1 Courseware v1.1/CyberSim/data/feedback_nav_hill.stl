@@ -1,0 +1,63 @@
+signal x,y,z,pitch,roll,yaw,dist,angle,ax,ay,az,bump_l,bump_c,bump_r,drop_l,drop_r,cliff_l,cliff_c, cliff_r, cliff_ls,cliff_cs, cliff_rs, lws, rws 
+param Tmax= 60
+
+### Hill climbing tests 
+
+# what hill ?
+
+phi_what_hill :=  (abs(angle[t]) < 5) until[0, Tmax] (z[t] > 0.2)
+
+# going downhill (maybe rev XY in accelerometer) 
+param dh_angle = 140, tdh=5, dh_small_angle = 20
+downhill := alw_[0, tdh] (abs( abs(angle[t]) - dh_angle) < dh_small_angle)
+phi_revXY := ev_[0, Tmax] downhill
+
+# Hill top
+param top_ramp=0.3
+mu_not_top := z[t] < top_ramp
+phi_not_top := alw_[0, Tmax] mu_not_top
+
+test test_hill_left: "data\Environment - south ramp left.xml", 60.1, true
+{
+	fault_goal_top 
+    {phi_not_top,
+     "PROBLEM: couldn't reach top of the ramp on time",
+     "Requirement PASSED: reach the top of a ramp on time",
+     false
+    }
+	
+	fault_what_hill
+    {phi_what_hill,
+     "PROBLEM DETECTED: the robot does not seem to reorient itself in the up-hill direction",
+     "",
+     true
+    }
+
+    fault_revXY 
+    {
+      phi_revXY,
+      "PROBLEM DETECTED: the robot is heading downhill instead of uphill. Checks the sign of X and Y axes in accelerometer readings.",
+      "",
+      true
+    }	
+}
+
+test test_hill_right: "data\Environment - south ramp right.xml", 60.1, true
+{
+	fault_goal_top 
+	fault_what_hill
+    fault_revXY
+}
+
+
+test test_hill_obstacle: "data\Environment - east ramp obstacle.xml", 60.1, true
+{
+    fault_goal_top
+	fault_what_hill
+
+}
+	
+test test_nav_hill_climb: "data\Environment - Navigation and Hill Climb 1.xml", 80.1, true
+{
+    fault_goal_top(Tmax=80)
+}

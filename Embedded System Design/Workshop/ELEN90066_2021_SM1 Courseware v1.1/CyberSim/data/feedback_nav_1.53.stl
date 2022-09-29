@@ -1,0 +1,158 @@
+param Tmax= 40
+
+## Circle 
+
+param small_ws=1, small_angle = 5
+reorient_left := (abs(lws[t] + rws[t]) < small_ws) and (rws[t] > small_ws) 
+reorient_right := (abs(lws[t] + rws[t]) <small_ws) and (lws[t] > small_ws) 
+reorient := (reorient_left) or (reorient_right) 
+
+yaw0 := abs(yaw[t])< small_angle
+circle := (yaw0) and (reorient until_[1, 50] (yaw0))
+phi_circle := ev_[0, Tmax] (circle)
+
+### bumps faults
+
+## predicates
+mu_bump := bump_l[t] +  bump_r[t] > 0.5
+mu_bump_l := bump_l[t] > 0.5
+mu_bump_r := bump_r[t] > 0.5
+
+## events 
+evt_bump_up := (not mu_bump) and (ev_[0.1, 0.2] (mu_bump))
+evt_bump_down := mu_bump and (ev_[0.1, 0.2] (not mu_bump))
+
+evt_bump_r_up := (not mu_bump_r) and (ev_[0.1, 0.2] (mu_bump_r))
+evt_bump_r_down := mu_bump_r and (ev_[0.1, 0.2] (not mu_bump_r))
+
+evt_bump_l_up := (not mu_bump_l) and (ev_[0.1, 0.2] (mu_bump_l))
+evt_bump_l_down := mu_bump_l and (ev_[0.1, 0.2] (not mu_bump_l))
+
+## formulas 
+quick_rebump := evt_bump_down and ev_[0.5, 4] evt_bump_up 
+bump_l_then_bump_r := evt_bump_l_down and (ev_[0.1, 0.2] ( ( not mu_bump ) until_[0, 10] (evt_bump_r_up) ))
+bump_r_then_bump_l := evt_bump_r_down and (ev_[0.1, 0.2] ( ( not mu_bump ) until_[0, 10] (evt_bump_l_up) ))
+
+## Top level formulas
+phi_quick_rebump := ev_[0, Tmax] (quick_rebump)  # two consecutive bumps in short period of time 
+phi_alw_bump := ev_[0, Tmax] alw_[0, 5] ( mu_bump )  # continuous bump for several seconds 
+phi_bump_left_right := ev_[0, Tmax] (bump_l_then_bump_r) # bump left (strictly) followed by bump right 
+phi_bump_right_left := ev_[0, Tmax] (bump_r_then_bump_l)  # bump right (strictly) followed by bump left 
+
+### Loose tolerance in re-orientation
+
+param angle_tol = 15, tau = 39
+mu_angle0 := abs (angle[t]) < angle_tol  
+phi_wrong_orientation := ev_[tau,Tmax] (not mu_angle0)
+
+### Nav south left
+mu_south_left := y[t] < 3. or x[t] > 5
+phi_goal_south_left := alw_[0, Tmax] mu_south_left
+
+test nav_obstacle_south_left: "Environment - obstacle south left.xml", 40.1, true
+{
+	
+    fault_quick_rebump 
+    { phi_quick_rebump,
+       "PROBLEM: Robot seems to not back up enough after bumping into an obstacle",
+       "",
+       true
+    }
+
+    fault_bump_left_right 
+    { phi_bump_left_right,
+       "PROBLEM: Robot bumped left then right, was this intended ?",
+       "",
+       true
+    }
+
+    fault_bump_right_left 
+    { phi_bump_right_left,
+       "PROBLEM: Robot bumped right then left, was this intended ?",
+       "",
+       true
+    }
+
+    fault_alw_bump 
+    { phi_alw_bump,
+       "PROBLEM: Robot seems to stick against an obstacle",
+       "",
+       true
+    }
+
+    fault_goal_south_left 
+    {phi_goal_south_left,
+     "PROBLEM: Couldn't avoid obstacle on time (40s)",
+     "Requirement PASSED: Avoid obstacle on time (40s)",
+     false
+    }
+	
+	fault_wrong_orientation_south_left 
+	{(not phi_goal_south_left) and phi_wrong_orientation,
+   	"PROBLEM DETECTED: Obstacle avoided, but travels in a significantly different direction than initially.",
+	"",
+	true
+	}	
+    
+ 	fault_circle 
+	{phi_circle,
+   	"PROBLEM DETECTED: Circles in-place. A possible cause is the use of strict equality (or very low tolerance) in re-orientation check",
+	"",
+	true
+	}
+
+}
+
+### Nav south right
+mu_south_right := y[t] < 3. or x[t] < 5
+phi_goal_south_right := alw_[0, Tmax] mu_south_right
+
+test nav_obstacle_south_right: "Environment - obstacle south right.xml", 40.1, true
+{
+
+    fault_bump_left_right 
+    fault_bump_right_left
+
+	fault_goal_south_right
+    {phi_goal_south_right,
+     "PROBLEM: Couldn't avoid obstacle on time (40s)",
+     "Requirement PASSED: Avoid obstacle on time (40s)",
+     false
+    }
+	
+    fault_wrong_orientation_south_right 
+	{(not phi_goal_south_right) and phi_wrong_orientation,
+   	"PROBLEM DETECTED: Obstacle avoided, but travels in a significantly different direction than initially.",
+	"",
+	true
+	}	
+	
+	fault_circle
+}
+
+### Nav east right
+mu_east_right := y[t] > 5. or x[t] < 3. 
+phi_goal_east_right := alw_[0, Tmax] mu_east_right 
+
+test nav_obstacle_east_right: "Environment - obstacle east right.xml", 40.1, true
+{
+
+    fault_bump_left_right 
+    fault_bump_right_left
+
+	fault_goal_east_right
+    {phi_goal_east_right,
+     "PROBLEM: Couldn't avoid obstacle on time (40s)",
+     "Requirement PASSED: Avoid obstacle on time (40s)",
+     false
+    }
+	
+	fault_wrong_orientation_east_right 
+	{(not phi_goal_east_right) and phi_wrong_orientation,
+   	"PROBLEM DETECTED: Obstacle avoided, but travels in a significantly different direction than initially.",
+	"",
+	true
+	}	
+	
+	fault_circle
+}
