@@ -1,2 +1,27 @@
 
 *.zip
+Machine Learning/Assignment3/dataset/dataset/vocabulary.csv
+Machine Learning/Assignment3/dataset/dataset/unlabeled_raw.csv
+Machine Learning/Assignment3/dataset/dataset/unlabeled_tfidf.csv
+Machine Learning/Assignment3/dataset/dataset/unlabeled_embedding.csv
+Machine Learning/Assignment3/dataset/dataset/train_tfidf.csv
+Machine Learning/Assignment3/dataset/dataset/train_raw.csv
+Machine Learning/Assignment3/dataset/dataset/train_embedding.csv
+Machine Learning/Assignment3/dataset/dataset/test_tfidf.csv
+Machine Learning/Assignment3/dataset/dataset/test_raw.csv
+Machine Learning/Assignment3/dataset/dataset/test_embedding.csv
+Machine Learning/Assignment3/dataset/dataset/dev_tfidf.csv
+Machine Learning/Assignment3/dataset/dataset/dev_raw.csv
+Machine Learning/Assignment3/dataset/dataset/dev_embedding.csv
+Machine Learning/Assignment3/dataset/__MACOSX/dataset/._vocabulary.csv
+Machine Learning/Assignment3/dataset/__MACOSX/dataset/._unlabeled_tfidf.csv
+Machine Learning/Assignment3/dataset/__MACOSX/dataset/._unlabeled_raw.csv
+Machine Learning/Assignment3/dataset/__MACOSX/dataset/._unlabeled_embedding.csv
+Machine Learning/Assignment3/dataset/__MACOSX/dataset/._train_tfidf.csv
+Machine Learning/Assignment3/dataset/__MACOSX/dataset/._train_raw.csv
+Machine Learning/Assignment3/dataset/__MACOSX/dataset/._train_embedding.csv
+Machine Learning/Assignment3/dataset/__MACOSX/dataset/._test_tfidf.csv
+Machine Learning/Assignment3/dataset/__MACOSX/dataset/._test_raw.csv
+Machine Learning/Assignment3/dataset/__MACOSX/dataset/._test_embedding.csv
+Machine Learning/Assignment3/dataset/__MACOSX/dataset/._dev_tfidf.csv
+Machine Learning/Assignment3/dataset/__MACOSX/dataset/._dev_embedding.csv
