@@ -1,0 +1,29 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch GameEngine",
+            "request": "launch",
+            "mainClass": "GameEngine",
+            "projectName": "Assignment_2_323b57b0"
+        },
+        {
+            "type": "java",
+            "name": "Launch GameEngine",
+            "request": "launch",
+            "mainClass": "Assignment_2.GameEngine",
+            "projectName": ""
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceRoot}"
+            }
+        }
+    ]
+}

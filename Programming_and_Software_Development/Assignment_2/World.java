@@ -1,88 +1,53 @@
-package Assignment_2;
 
+
+import java.util.ArrayList;
 
 public class World {
 
-    private static final int EAST_EDGE = 5;
-    private static final int WEST_EDGE = 0;
-    private static final int SOUTH_EDGE = 3;
-    private static final int NORTH_EDGE = 0;
+    
+
+    private static final String HEAL = "+";
+    private static final String DAMAGE_PERK = "^";
+    private static final String WARP_STONE = "@";
     private static final int BASE_MOVE = 1;
+    private static final int NEAR_DISTANCE = 2;
 
-    private static final int INITIAL_PLAYER_ROW = 1;
-    private static final int INITIAL_PLAYER_COL = 1;
-    private static final int INITIAL_MONSTER_ROW = 2;
-    private static final int INITIAL_MONSTER_COL = 4;
-
-    private int playerRow;
-    private int playerCol;
-    private int monsterRow;
-    private int monsterCol;
 
     // Constructor, getter and setter
     public World() {
-        setPlayerRow(INITIAL_PLAYER_ROW);
-        setPlayerCol(INITIAL_PLAYER_COL);
-        setMonsterRow(INITIAL_MONSTER_ROW);
-        setMonsterCol(INITIAL_MONSTER_COL);
+        
     }
 
-    public int getPlayerRow() {
-        return playerRow;
-    }
-
-    public void setPlayerRow(int playerRow) {
-        this.playerRow = playerRow;
-    }
-
-    public int getPlayerCol() {
-        return playerCol;
-    }
-
-    public void setPlayerCol(int playerCol) {
-        this.playerCol = playerCol;
-    }
-
-    public int getMonsterRow() {
-        return monsterRow;
-    }
-
-    public void setMonsterRow(int monsterRow) {
-        this.monsterRow = monsterRow;
-    }
-
-    public int getMonsterCol() {
-        return monsterCol;
-    }
-
-    public void setMonsterCol(int monsterCol) {
-        this.monsterCol = monsterCol;
-    }
+    
 
     // Apply each movement of player if valid
-    public void playerMove(String direction) {
+    public void playerMove(String direction, Player player, Map map) {
+        
+        int playerRow = player.getRow();
+        int playerCol = player.getCol();
+        
         switch (direction) {
             case "w":
-                if (this.playerRow - BASE_MOVE >= NORTH_EDGE) {
-                    this.playerRow -= BASE_MOVE;
+                if (map.isValid(playerCol, playerRow - BASE_MOVE)) {
+                    player.moveUp();
                 }
                 break;
 
             case "a":
-                if (this.playerCol - BASE_MOVE >= WEST_EDGE) {
-                    this.playerCol -= BASE_MOVE;
+                if (map.isValid(playerCol - BASE_MOVE, playerRow)) {
+                    player.moveLeft();
                 }
                 break;
 
             case "s":
-                if (this.playerRow + BASE_MOVE <= SOUTH_EDGE) {
-                    this.playerRow += BASE_MOVE;
+                if (map.isValid(playerCol, playerRow + BASE_MOVE)) {
+                   player.moveDown();
                 }
                 break;
 
             case "d":
-                if (this.playerRow - BASE_MOVE <= NORTH_EDGE) {
-                    this.playerCol += BASE_MOVE;
+                if (map.isValid(playerCol + BASE_MOVE, playerRow)) {
+                    player.moveRight();
                 }
                 break;
 
@@ -92,35 +57,99 @@ public class World {
 
     }
 
-    // Check if the player encontered a monster
-    public boolean isEncountered() {
-
-        // Using "==" to compare two integers in the range of 0 to 6.
-        return ((this.playerCol == this.monsterCol) && (this.playerRow == this.monsterRow));
-    }
-
-    // Display the world map
-    public void dispMap(Player player, Monster monster) {
-        for (int row = 0; row <= SOUTH_EDGE; row++) {
-            for (int col = 0; col <= EAST_EDGE; col++) {
-                if (row == this.monsterRow && col == this.monsterCol) {
-                    System.out.print(monster.getName().substring(0, 1).toLowerCase());
-                } else if (row == this.playerRow && col == this.playerCol) {
-                    System.out.print(player.getName().substring(0, 1).toUpperCase());
-                } else {
-                    System.out.print(".");
+    // Applay each movement of monster
+    public void monsterMove(Monster monster, Player player, Map map){
+        
+        int monsterCol = monster.getCol();
+        int monsterRow = monster.getRow();
+        int playerCol = player.getCol();
+        int playerRow = player.getRow();
+        
+        if (nearPlayer(monster, player)){
+            
+            if(monsterCol < playerCol && map.isValid(monsterCol + BASE_MOVE, monsterRow)){
+                monster.moveRight();
+            
+            }else if(monsterCol > playerCol && map.isValid(monsterCol - BASE_MOVE, monsterRow)){
+                monster.moveLeft();
+            
+            }else{
+                
+                if(monsterRow < playerRow && map.isValid(monsterCol, monsterRow + BASE_MOVE)){
+                    monster.moveDown();
+                
+                }else if(monsterRow > playerRow && map.isValid(monsterCol, monsterRow - BASE_MOVE)){
+                    monster.moveUp();
+                
                 }
             }
-            System.out.println();
-
         }
     }
 
-    // Re-initialize locations
-    public void locationReset() {
-        setPlayerRow(INITIAL_PLAYER_ROW);
-        setPlayerCol(INITIAL_PLAYER_COL);
-        setMonsterRow(INITIAL_MONSTER_ROW);
-        setMonsterCol(INITIAL_MONSTER_COL);
+    // Check if the player encontered a monster
+    public ArrayList<Monster> monsterEncountered(Player player, ArrayList<Monster> monsters) {
+        
+        ArrayList<Monster> encounteredList = new ArrayList<>();
+        
+        Monster[] monsterArray = monsters.toArray(new Monster[monsters.size()]);
+        for (Monster monster: monsterArray){
+            if (monster.getCol() == player.getCol() && monster.getRow() == player.getRow()){
+                encounteredList.add(monster);
+            }
+        }
+        return encounteredList;
+    }
+
+    public boolean nearPlayer(Monster monster, Player player){
+        int playerCol = player.getCol();
+        int playerRow = player.getRow();
+        int monsterCol = monster.getCol();
+        int monsterRow = monster.getRow();
+
+        if( monsterCol - NEAR_DISTANCE <= playerCol && playerCol <= monsterCol + NEAR_DISTANCE) {
+            if( monsterRow - NEAR_DISTANCE <= playerRow && playerRow <= monsterRow + NEAR_DISTANCE) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean pickItem(Player player, ArrayList<Item> items){
+        int playerCol = player.getCol();
+        int playerRow = player.getRow();
+        
+        for(int i = 0; i < items.size();i++){
+            Item item = items.get(i);
+            int itemCol = item.getCol();
+            int itemRow = item.getRow();
+            
+            if(playerCol == itemCol && playerRow == itemRow){
+                switch(item.getSymbol()){
+                    case HEAL:
+                        player.healthRecover();
+                        System.out.println(item.getMessage());
+                        items.remove(item);
+                        return false;
+                        
+                    case DAMAGE_PERK:
+                        player.attackUp();
+                        System.out.println(item.getMessage());
+                        items.remove(item);
+
+
+                        return false;
+                    case WARP_STONE:
+                        player.levelUp();
+                        System.out.println(item.getMessage());
+
+                        return true;
+
+
+                }
+            }
+            
+        }
+        return false;
     }
 }
+

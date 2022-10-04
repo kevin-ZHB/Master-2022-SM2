@@ -1,35 +1,33 @@
-package Assignment_2;
 
 
-public class Player {
+
+public class Player extends Entity{
 
     private static final int INITIAL_LEVEL = 1;
     private static final int BASE_HEALTH = 17;
     private static final int LOWEST_HEALTH = 0;
     private static final int HEALTH_MULTIPLIER = 3;
     private static final int BASE_DAMAGE = 1;
+    private static final int INITIAL_BONUS_DAMAGE = 0;
 
     private String name;
     private int maxHealth;
     private int currentHealth;
-    private int level = INITIAL_LEVEL;
+    private int level;
+    private int baseDamage;
+    private int bonusDamage = 0;
     private int damage;
 
     // Constructor, getter and setter
-    public Player(String name) {
-        setLevel(INITIAL_LEVEL);
-        setName(name);
-        setMaxHealth(this.level);
-        setCurrentHealth(this.maxHealth);
-        setDamage(level);
-    }
 
     public Player() {
         setName(null);
         setLevel(INITIAL_LEVEL);
         setMaxHealth(this.level);
         setCurrentHealth(this.maxHealth);
-        setDamage(level);
+        setBaseDamage(this.level);
+        setBounsDamage(INITIAL_BONUS_DAMAGE);
+        setDamage(this.baseDamage + this.bonusDamage);
     }
 
     public String getName() {
@@ -38,6 +36,10 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
+        if(this.name!= null){
+            super.setSymbol(name.substring(0, 1).toUpperCase());
+
+        }
     }
 
     public int getMaxHealth() {
@@ -53,7 +55,7 @@ public class Player {
     }
 
     public void setCurrentHealth(int currentHealth) {
-        this.currentHealth = getMaxHealth();
+        this.currentHealth = currentHealth;
     }
 
     public int getLevel() {
@@ -68,12 +70,28 @@ public class Player {
         this.level = INITIAL_LEVEL;
     }
 
-    public int getDamage() {
-        return damage;
+    public int getBaseDamage() {
+        return this.baseDamage;
     }
 
-    public void setDamage(int level) {
-        this.damage = BASE_DAMAGE + level;
+    public void setBaseDamage(int level) {
+        this.baseDamage = BASE_DAMAGE + level;
+    }
+
+    public void setBounsDamage(int INITIAL_BONUS_DAMAGE){
+        this.bonusDamage = INITIAL_BONUS_DAMAGE;
+    }
+
+    public int getBonusDamage() {
+        return this.bonusDamage;
+    }
+
+    public void setDamage(int damage){
+        this.damage = damage;
+    }
+
+    public int getDamage(){
+        return this.damage;
     }
 
     // Decrease hp based on monster's attack
@@ -94,5 +112,20 @@ public class Player {
     // Recover hp
     public void healthRecover() {
         this.currentHealth = this.maxHealth;
+    }
+
+    // Pick up damage perk and get 1 bonus damage;
+    public void attackUp(){
+        this.bonusDamage += 1;
+        setDamage(this.baseDamage+ this.bonusDamage);
+    }
+
+    // Pick up warp stone and get level up;
+    public void levelUp(){
+        this.level += 1;
+    }
+
+    public void move(String direction){
+        
     }
 }

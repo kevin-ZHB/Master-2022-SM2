@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch test",
+            "request": "launch",
+            "mainClass": "Assignment_2.test",
+            "projectName": "Programming_and_Software_Development_5e6d0fbf"
+        },
+        {
+            "type": "java",
+            "name": "Launch GameEngine",
+            "request": "launch",
+            "mainClass": "Assignment_2.GameEngine",
+            "projectName": "Programming_and_Software_Development_5e6d0fbf"
+        },
+        {
+            "type": "java",
             "name": "Launch Hello",
             "request": "launch",
             "mainClass": "Hello",
@@ -16,9 +30,7 @@
             "name": "Launch Current File",
             "request": "launch",
             "mainClass": "${file}",
-            "console": "internalConsole",
-
-
+            "console": "internalConsole"
         }
     ]
 }

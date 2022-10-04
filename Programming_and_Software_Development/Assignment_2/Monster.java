@@ -1,6 +1,6 @@
-package Assignment_2;
 
-public class Monster {
+
+public class Monster extends Entity{
 
     private static final int LOWEST_HEALTH = 0;
 
@@ -25,6 +25,8 @@ public class Monster {
 
     public void setName(String name) {
         this.name = name;
+        super.setSymbol(name.substring(0, 1).toLowerCase());
+
     }
 
     public int getMaxHealth() {
@@ -73,4 +75,5 @@ public class Monster {
         this.currentHealth = this.maxHealth;
     }
 
+    
 }
