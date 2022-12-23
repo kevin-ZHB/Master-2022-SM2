@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"<Unnamed>","l":"AssistantSystem"},{"p":"<Unnamed>","l":"HRAssistant"},{"p":"<Unnamed>","l":"Matchmaker"}];updateSearchResults();

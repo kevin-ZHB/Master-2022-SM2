@@ -1,5 +1,4 @@
-
-public class Item extends Entity{
+public class Item extends Entity {
 
     private static final String HEAL_MESSAGE = "Healed!";
     private static final String HEAL_SYMBOL = "+";
@@ -8,27 +7,27 @@ public class Item extends Entity{
     private static final String DAMAGE_PERK_SYMBOL = "^";
 
     private static final String WARP_STONE_MESSAGE = "World complete! (You leveled up!)!";
-    private static final String  WARP_STONE_SYMBOL = "@";
-
+    private static final String WARP_STONE_SYMBOL = "@";
 
     private String message;
-    
-    public Item(){
+
+    public Item() {
     }
 
+    // getter
     public String getMessage() {
         return message;
     }
 
+    // setter
     public void setMessage() {
-        if(super.getSymbol().equals(HEAL_SYMBOL)){
+        if (super.getSymbol().equals(HEAL_SYMBOL)) {
             this.message = HEAL_MESSAGE;
-        }else if(super.getSymbol().equals(DAMAGE_PERK_SYMBOL)){
+        } else if (super.getSymbol().equals(DAMAGE_PERK_SYMBOL)) {
             this.message = DAMAGE_PERK_MESSAGE;
-        }else if(super.getSymbol().equals(WARP_STONE_SYMBOL)){
+        } else if (super.getSymbol().equals(WARP_STONE_SYMBOL)) {
             this.message = WARP_STONE_MESSAGE;
         }
     }
-    
-    
+
 }

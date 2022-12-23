@@ -1,6 +1,5 @@
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import metrics
-from sklearn.dummy import DummyClassifier
 import pandas as pd
 
 
@@ -15,9 +14,9 @@ print("train data load successfully")
 test_data = pd.read_csv(test_file)
 print("test data load successfully")
 
-#train_label = train_data["Toxicity"]
-#train_feature = train_data.iloc[:,26:]
-#print("train data processed")
+train_label = train_data["Toxicity"]
+train_feature = train_data.iloc[:,26:]
+print("train data processed")
 
 
 test_label = test_data["Toxicity"]
@@ -25,7 +24,7 @@ test_feature = test_data.iloc[:,26:]
 
 print("test data processed")
 
-clf1 = KNeighborsClassifier(n_neighbors=3, weights='distance', n_jobs=-1, metric = 'cosine')
+clf1 = KNeighborsClassifier(n_neighbors=3, weights='distance', n_jobs=-1)
 #clf1.fit(train_feature, train_label)
 
 
@@ -48,7 +47,13 @@ for i in identity:
     
     print("Knn model trained")
     predic = clf1.predict(test_feature)
-    print(metrics.classification_report(test_label, predic))
+    print(metrics.confusion_matrix(test_label, predic))
+
+    pro = clf1.predict_proba(test_feature)
+
+    auc = metrics.roc_auc_score(test_label, pro[:,1], )
+
+    print(auc)
 
     """
     clf2 = DummyClassifier(strategy= 'most_frequent')

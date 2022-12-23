@@ -1,0 +1,31 @@
+{
+    "configurations": [
+
+        {
+            "type": "java",
+            "name": "Launch text",
+            "request": "launch",
+            "mainClass": "text",
+            "projectName": "Final_622b9b06"
+        },
+        {
+            "type": "java",
+            "name": "Launch HRAssistant",
+            "request": "launch",
+            "mainClass": "HRAssistant",
+            "args": "-r audit",
+            "projectName": "Final_622b9b06"
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceRoot}"
+            }
+        }
+    ]
+}

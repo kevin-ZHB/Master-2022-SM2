@@ -1,0 +1,65 @@
+K=3
+Christian
+test data processed
+Knn model trained
+              precision    recall  f1-score   support
+
+           0       0.92      0.97      0.95      2878
+           1       0.44      0.21      0.28       307
+
+    accuracy                           0.90      3185
+   macro avg       0.68      0.59      0.61      3185
+weighted avg       0.87      0.90      0.88      3185
+
+Muslim
+test data processed
+Knn model trained
+              precision    recall  f1-score   support
+
+           0       0.79      0.88      0.83       825
+           1       0.47      0.32      0.38       281
+
+    accuracy                           0.74      1106
+   macro avg       0.63      0.60      0.60      1106
+weighted avg       0.71      0.74      0.72      1106
+
+---------------------------------
+Female
+test data processed
+Knn model trained
+              precision    recall  f1-score   support
+
+           0       0.87      0.94      0.90      3908
+           1       0.37      0.19      0.25       685
+
+    accuracy                           0.83      4593
+   macro avg       0.62      0.57      0.58      4593
+weighted avg       0.79      0.83      0.81      4593
+
+---------------------------------
+Homosexual gay or lesbian
+test data processed
+Knn model trained
+              precision    recall  f1-score   support
+
+           0       0.76      0.89      0.82       778
+           1       0.43      0.23      0.30       283
+
+    accuracy                           0.71      1061
+   macro avg       0.60      0.56      0.56      1061
+weighted avg       0.67      0.71      0.68      1061
+
+---------------------------------
+Male
+test data processed
+Knn model trained
+              precision    recall  f1-score   support
+
+           0       0.85      0.92      0.88      3526
+           1       0.32      0.18      0.23       716
+
+    accuracy                           0.80      4242
+   macro avg       0.58      0.55      0.56      4242
+weighted avg       0.76      0.80      0.77      4242
+
+---------------------------------

@@ -2,16 +2,16 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-
 
 public class GameEngine {
 
     private static final String ENTER_KEY = "";
     private static final String PLAYER_DATA = "player.dat";
     private static final String WORLD_FILE_SUFFIX = ".dat";
+    private static final int START_LENGTH = 5;
+    private static final int FILE_START_INDEX = 6;
 
     public static void main(String[] args) {
 
@@ -35,7 +35,6 @@ public class GameEngine {
         ArrayList<Item> items = new ArrayList<>();
         Map map = new Map();
         World world = new World();
-        
 
         displayMenuInfo(player, monster);
 
@@ -61,45 +60,53 @@ public class GameEngine {
                 monsters.add(monster);
                 returnToMenu(player, monster, stdin);
 
-            } else if (command.equals("start")) {
+            } else if (command.contains("start")) {
 
                 if (!player.hasPlayer()) {
                     System.out.println("No player found, please create a player with 'player' first.");
-                    returnToMenu(player, monster, stdin);
-
-                } else if (!monster.hasMonster()) {
-                    System.out.println("No monster found, please create a monster with 'monster' first.");
+                    System.out.println();
                     returnToMenu(player, monster, stdin);
 
                 } else {
-
-                    // Initialize all states
                     healthRecover(player, monster);
-                    map.locationReset(player, monster);
-                    map.setMapInfo();
-                    startGame(player, monsters, world, map, stdin);
-                    returnToMenu(player, monster, stdin);
-                }
-            } else if (command.contains("start")) {
-                if (!player.hasPlayer()) {
-                    System.out.println("No player found, please create a player with 'player' first.");
-                    returnToMenu(player, monster, stdin);
+                    if (command.length() > START_LENGTH) {
+                        String filename = command.substring(FILE_START_INDEX) + WORLD_FILE_SUFFIX;
+                        try {
 
-                } else{
-                    String filename = command.substring(6)+WORLD_FILE_SUFFIX;
-                    try{
-                        loadWorld(filename, map, player, monsters, items);
-                        worldLoop(world,map,player, monsters, items, stdin);
+                            loadWorld(filename, map, player, monsters, items);
+                            worldLoop(world, map, player, monsters, items, stdin);
+
+                        } catch (GameLevelNotFoundException e) {
+                            System.out.println(e.getMessage());
+                            System.out.println();
+
+                        }
+
                         returnToMenu(player, monster, stdin);
-                    } catch (GameLevelNotFoundException e){
-                        System.out.println("load world failed");
-                    } 
+                    } else {
+                        if (!monster.hasMonster()) {
+                            System.out.println("No monster found, please create a monster with 'monster' first.");
+                            System.out.println();
+                            returnToMenu(player, monster, stdin);
+
+                        } else {
+
+                            // Initialize all states
+                            map.locationReset(player, monster);
+                            map.setMapInfo();
+                            startGame(player, monsters, world, map, stdin);
+                            returnToMenu(player, monster, stdin);
+
+                        }
+                    }
                 }
 
-            } else if (command.equals("save")){
+                // Save player data
+            } else if (command.equals("save")) {
                 savePlayer(player);
-                
-            } else if (command.equals("load")){
+
+                // Load player data
+            } else if (command.equals("load")) {
                 loadPlayer(player);
             }
 
@@ -186,6 +193,8 @@ public class GameEngine {
             String name = stdin.nextLine();
             player.setName(name);
             System.out.println("Player '" + player.getName() + "' created.");
+            System.out.println();
+
         } else {
             System.out.printf("%s (Lv. %d)%n", player.getName(), player.getLevel());
             System.out.printf("Damage: %d%n", player.getDamage());
@@ -209,7 +218,6 @@ public class GameEngine {
         int damage = Integer.parseInt(stdin.nextLine());
         monster.setDamage(damage);
 
-
         System.out.printf("Monster '%s' created.%n", monster.getName());
 
     }
@@ -217,30 +225,30 @@ public class GameEngine {
     // Display message when "home" is entered
     private void displayHomeInfo() {
         System.out.println("Returning home...");
+        System.out.println();
+
     }
 
     // Dispaly message to return to main menu
     private void displayReturnMenu() {
-        System.out.println();
         System.out.print("(Press enter key to return to main menu)");
     }
 
     // Display battle loop
     private void battleLoop(Player player, Monster monster) {
 
-        System.out.println(player.getName() + " encountered a " + monster.getName());
-        System.out.println();
+        System.out.println(player.getName() + " encountered a " + monster.getName() + "!");
 
         // Keep fighting until one's hp is low
         while (!player.isHpLow() && !monster.isHpLow()) {
-
+            System.out.println();
             System.out.printf("%s %d/%d | %s %d/%d%n", player.getName(), player.getCurrentHealth(),
                     player.getMaxHealth(), monster.getName(), monster.getCurrentHealth(), monster.getMaxHealth());
             System.out.printf("%s attacks %s for %d damage.%n", player.getName(), monster.getName(),
                     player.getDamage());
             monster.battle(player);
             if (monster.isHpLow()) {
-                System.out.println(player.getName() + " wins");
+                System.out.println(player.getName() + " wins!");
                 break;
             }
 
@@ -248,19 +256,19 @@ public class GameEngine {
                     monster.getDamage());
             player.battle(monster);
             if (player.isHpLow()) {
-                System.out.println(monster.getName() + " wins");
+                System.out.println(monster.getName() + " wins!");
                 break;
             }
 
         }
     }
 
-    // Method when game starts
+    // Method when game starts without a world file
     private void startGame(Player player, ArrayList<Monster> monsters, World world, Map map, Scanner stdin) {
         String direction;
 
         // Keep moving until player encountered a monster
-        ArrayList <Monster> encounterList = world.monsterEncountered(player, monsters);
+        ArrayList<Monster> encounterList = world.monsterEncountered(player, monsters);
         do {
             map.render(player, monsters);
             map.dispMap();
@@ -275,14 +283,14 @@ public class GameEngine {
             world.playerMove(direction, player, map);
             encounterList = world.monsterEncountered(player, monsters);
 
-        } while (encounterList.size() == 0) ;
+        } while (encounterList.size() == 0);
 
         if (encounterList.size() != 0) {
-            for(int i=0; i< encounterList.size(); i++){
+            for (int i = 0; i < encounterList.size(); i++) {
                 Monster monster = encounterList.get(i);
                 battleLoop(player, monster);
             }
-            
+
         }
 
     }
@@ -290,10 +298,11 @@ public class GameEngine {
     // Method to recover health
     private void healthRecover(Player player, Monster monster) {
         player.healthRecover();
-        monster.healthRecover();
+        if (monster.hasMonster()) {
+            monster.healthRecover();
+        }
     }
 
-    
     // Method to return to the main menu
     private void returnToMenu(Player player, Monster monster, Scanner stdin) {
 
@@ -307,150 +316,162 @@ public class GameEngine {
         displayMenuInfo(player, monster);
     }
 
-    private void loadWorld(String file, Map map,Player player, ArrayList<Monster> monsters, ArrayList<Item> items) throws GameLevelNotFoundException{
-        
+    // Load world file
+    private void loadWorld(String file, Map map, Player player, ArrayList<Monster> monsters, ArrayList<Item> items)
+            throws GameLevelNotFoundException {
+
+        // Connect to the file
         Scanner inputStream = null;
         try {
             inputStream = new Scanner(new FileInputStream(file));
-            
-        } catch(Exception e){
-            throw new GameLevelNotFoundException();
-        } 
-        map.setNumCol(Integer.parseInt(inputStream.next()));
-        map.setNumRow(Integer.parseInt(inputStream.next()));
-        inputStream.nextLine();
+            // Read data for map
+            map.setNumCol(Integer.parseInt(inputStream.next()));
+            map.setNumRow(Integer.parseInt(inputStream.next()));
+            inputStream.nextLine();
 
-        ArrayList<StringBuilder> mapInfo = new ArrayList<>();
-        for(int i =0; i< map.getNumRow(); i++){
-            StringBuilder row = new StringBuilder();
-            row.append(inputStream.nextLine());
-            mapInfo.add(row);            
-        }
-        map.setMapInfo(mapInfo);
-
-        while(inputStream.hasNextLine()){
-            String entity = inputStream.next();
-            
-            if(entity.charAt(0) == 'p'){
-                player.setCol(Integer.parseInt(inputStream.next()));
-                player.setRow(Integer.parseInt(inputStream.next()));
-            
-            } else if(entity.charAt(0) == 'm'){
-                Monster monster = new Monster();
-                monster.setCol(Integer.parseInt(inputStream.next()));
-                monster.setRow(Integer.parseInt(inputStream.next()));
-                monster.setName(inputStream.next());
-                monster.setMaxHealth(Integer.parseInt(inputStream.next()));
-                monster.setDamage(Integer.parseInt(inputStream.next()));
-                monsters.add(monster);
-            }else if (entity.charAt(0) == 'i'){
-                Item item = new Item();
-                item.setCol(Integer.parseInt(inputStream.next()));
-                item.setRow(Integer.parseInt(inputStream.next()));
-                item.setSymbol(inputStream.next());
-                item.setMessage();
-                items.add(item);
+            ArrayList<StringBuilder> mapInfo = new ArrayList<>();
+            for (int i = 0; i < map.getNumRow(); i++) {
+                StringBuilder row = new StringBuilder();
+                row.append(inputStream.nextLine());
+                mapInfo.add(row);
             }
+            map.setMapInfo(mapInfo);
+
+            // Read data for entities
+            while (inputStream.hasNextLine()) {
+                String entity = inputStream.next();
+
+                if (entity.charAt(0) == 'p') {
+                    player.setCol(Integer.parseInt(inputStream.next()));
+                    player.setRow(Integer.parseInt(inputStream.next()));
+
+                } else if (entity.charAt(0) == 'm') {
+                    Monster monster = new Monster();
+                    monster.setCol(Integer.parseInt(inputStream.next()));
+                    monster.setRow(Integer.parseInt(inputStream.next()));
+                    monster.setName(inputStream.next());
+                    monster.setMaxHealth(Integer.parseInt(inputStream.next()));
+                    monster.setDamage(Integer.parseInt(inputStream.next()));
+                    monsters.add(monster);
+                } else if (entity.charAt(0) == 'i') {
+                    Item item = new Item();
+                    item.setCol(Integer.parseInt(inputStream.next()));
+                    item.setRow(Integer.parseInt(inputStream.next()));
+                    item.setSymbol(inputStream.next());
+                    item.setMessage();
+                    items.add(item);
+                }
+            }
+
+        } catch (FileNotFoundException e) {
+            throw new GameLevelNotFoundException("Map not found.");
+
+        } catch (Exception e) {
+            System.out.println("An error occurred while loading the file.");
+            System.out.println();
         }
 
         inputStream.close();
-        
+
     }
 
-    private void savePlayer(Player player){
+    // Method to save player data
+    private void savePlayer(Player player) {
         PrintWriter outputStream = null;
-        if(player.hasPlayer()){
-            try{
+        if (player.hasPlayer()) {
+            try {
                 outputStream = new PrintWriter(new FileOutputStream(PLAYER_DATA));
-                outputStream.print(player.getName()+" ");
+                outputStream.print(player.getName() + " ");
                 outputStream.print(player.getLevel());
-    
-            } catch (FileNotFoundException e){
+
+            } catch (FileNotFoundException e) {
                 System.out.println("Error");
             }
             outputStream.close();
             System.out.println("Player data loaded.");
             displayWaitingCommand();
 
-        }else{
+        } else {
             System.out.println("No player data to save.");
             displayWaitingCommand();
 
         }
-        
-        
-        
-        
     }
 
-    private void loadPlayer(Player player){
-    
+    // Method to load player data
+    private void loadPlayer(Player player) {
+
         Scanner inputStream = null;
-        try{
+        try {
             inputStream = new Scanner(new FileInputStream(PLAYER_DATA));
             player.setName(inputStream.next());
             player.setLevel(Integer.parseInt(inputStream.next()));
-        } catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             System.out.println("No player data found");
             displayWaitingCommand();
-        } catch(Exception e){
-            System.out.println("load player failed");
+        } catch (Exception e) {
+            System.out.println("Load player failed");
             System.exit(1);
         }
         inputStream.close();
         System.out.println("Player data loaded.");
         displayWaitingCommand();
-    
-        
-        
+
     }
-    
-    private void worldLoop(World world, Map map, Player player, ArrayList<Monster> monsters, ArrayList<Item> items, Scanner stdin){
+
+    // Method when game starts with a world file
+    private void worldLoop(World world, Map map, Player player, ArrayList<Monster> monsters, ArrayList<Item> items,
+            Scanner stdin) {
         String command;
-        
-        
-        do{
+
+        do {
+
+            // Display map
             map.render(player, monsters, items);
-            player.healthRecover();
             map.dispMap();
             displayWaitingCommand();
             command = stdin.nextLine();
 
+            // Deal with "home" command
             if (command.equals("home")) {
                 displayHomeInfo();
                 break;
             }
-            for(int i=0; i<monsters.size(); i++){
+
+            // All monsters move
+            for (int i = 0; i < monsters.size(); i++) {
                 Monster monster = monsters.get(i);
                 world.monsterMove(monster, player, map);
             }
-            
+
+            // Player moves
             world.playerMove(command, player, map);
-            ArrayList <Monster> encounterList = world.monsterEncountered(player, monsters);
-            if(encounterList.size() != 0 ){
-                for(int i=0; i< encounterList.size(); i++){
+
+            // Check if player and monster are encountered
+            ArrayList<Monster> encounterList = world.monsterEncountered(player, monsters);
+            if (encounterList.size() != 0) {
+                for (int i = 0; i < encounterList.size(); i++) {
                     Monster monster = encounterList.get(i);
                     battleLoop(player, monster);
                     System.out.println();
-                    if(player.isHpLow()){
-                        displayHomeInfo();
-                        break;
-                    }else if (monster.isHpLow()){
-                        monsters.remove(monster);
-                    }
 
+                    // Deal with different battle results
+                    if (player.isHpLow()) {
+                        break;
+                    } else if (monster.isHpLow()) {
+                        monsters.remove(monster);
+
+                    }
                 }
             }
 
+            // Player picks up items
             boolean finish = world.pickItem(player, items);
-            if(finish){
+            if (finish) {
                 break;
             }
 
-        }while(!player.isHpLow());
+        } while (!player.isHpLow());
 
-
-        
     }
 }
-

@@ -1,6 +1,4 @@
-
-
-public class Monster extends Entity{
+public class Monster extends Entity {
 
     private static final int LOWEST_HEALTH = 0;
 
@@ -19,6 +17,7 @@ public class Monster extends Entity{
     public Monster() {
     }
 
+    // Setters and getters
     public String getName() {
         return name;
     }
@@ -54,7 +53,6 @@ public class Monster extends Entity{
         this.damage = damage;
     }
 
-
     // Decrease hp based on player's attack
     public void battle(Player player) {
         this.currentHealth -= player.getDamage();
@@ -75,5 +73,4 @@ public class Monster extends Entity{
         this.currentHealth = this.maxHealth;
     }
 
-    
 }

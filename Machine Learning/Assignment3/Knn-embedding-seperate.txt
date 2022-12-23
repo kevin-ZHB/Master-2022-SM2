@@ -1,0 +1,65 @@
+Christian
+test data processed
+Knn model trained
+              precision    recall  f1-score   support
+
+           0       0.91      0.99      0.95      2878
+           1       0.57      0.08      0.14       307
+
+    accuracy                           0.91      3185
+   macro avg       0.74      0.54      0.54      3185
+weighted avg       0.88      0.91      0.87      3185
+
+---------------------------------
+Muslim
+test data processed
+Knn model trained
+              precision    recall  f1-score   support
+
+           0       0.77      0.97      0.86       825
+           1       0.62      0.15      0.24       281
+
+    accuracy                           0.76      1106
+   macro avg       0.69      0.56      0.55      1106
+weighted avg       0.73      0.76      0.70      1106
+
+---------------------------------
+Female
+test data processed
+Knn model trained
+              precision    recall  f1-score   support
+
+           0       0.86      0.99      0.92      3908
+           1       0.59      0.07      0.13       685
+
+    accuracy                           0.85      4593
+   macro avg       0.72      0.53      0.52      4593
+weighted avg       0.82      0.85      0.80      4593
+
+---------------------------------
+Homosexual gay or lesbian        
+test data processed
+Knn model trained
+              precision    recall  f1-score   support
+
+           0       0.75      0.96      0.84       778
+           1       0.53      0.13      0.21       283
+
+    accuracy                           0.74      1061
+   macro avg       0.64      0.54      0.53      1061
+weighted avg       0.69      0.74      0.67      1061
+
+---------------------------------
+Male
+test data processed
+Knn model trained
+              precision    recall  f1-score   support
+
+           0       0.84      0.98      0.91      3526
+           1       0.47      0.07      0.12       716
+
+    accuracy                           0.83      4242
+   macro avg       0.66      0.53      0.51      4242
+weighted avg       0.78      0.83      0.77      4242
+
+---------------------------------

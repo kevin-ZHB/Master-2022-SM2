@@ -1,0 +1,6 @@
+createdAt,lastname,firstname,careerSummary,age,gender,highestDegree,COMP90041,COMP90038,COMP90007,INFO90002,salayExpectations,availability
+1665550411,James,Gosling,"I am a computer scientist, best known as the founder and lead designer behind the Java programming language",67,male,PHD,100,95,60,80,500000,14/11/22
+1665550498,Lovelace,Ada,Mathematician and inventor of the analytical engine,45,female,,,,,,200000,01/12/22
+1665550530,Hopper,Grace,Computer scientist and navy admiral,66,female,PHD,,,,,600000,
+1667641149,hongbo,zhou,,48,male,Master,,,,,,01/07/23
+1667657989,Ranran,Yu,student,22,female,Bachelor,,,,,3000,03/02/23

@@ -1,11 +1,6 @@
-
-
-public class GameLevelNotFoundException extends Exception{
-    GameLevelNotFoundException(String s){
+public class GameLevelNotFoundException extends Exception {
+    public GameLevelNotFoundException(String s) {
         super(s);
     }
 
-    GameLevelNotFoundException(){
-        super();
-    }
 }
